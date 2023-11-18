@@ -167,7 +167,7 @@ def placeOrderSingle(inst ,t_type,qty,order_type,price,variety):
     symb = inst[4:]
     papertrading = 0 #if this is 1, then real trades will be placed
     dt = datetime.now()
-    print(dt.hour,":",dt.minute,":",dt.second ," => ",t_type," ",symb," ",qty," ",order_type," @ price =  ",price)
+    print(dt.hour,":",dt.minute,":",dt.second ," => ",t_type," ",symb," ",qty," ",order_type)
     try:
 
         trade_price = getLTP(inst)
@@ -196,8 +196,8 @@ def placeOrderSingle(inst ,t_type,qty,order_type,price,variety):
 
 ####################__INPUT__#####################
 
-api_key = ""
-access_token = ""
+api_key = open("zerodha_api_key.txt",'r').read()
+access_token = open("zerodha_access_token.txt",'r').read()
 kc = KiteConnect(api_key=api_key)
 kc.set_access_token(access_token)
 

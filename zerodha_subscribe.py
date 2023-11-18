@@ -4,15 +4,14 @@ from kiteconnect import KiteConnect
 from pprint import pprint
 import threading
 from flask import Flask, request
-import keys_cred
 
 ##############################################
 #                   INPUT's                  #
 ##############################################
-# apiKey = "j1qak21f8a5zqwzh"
-# accessToken = "rK0Xg2Hya1drbU3Xdzh3g7MSP82wdPho"
-kc = KiteConnect(api_key=keys_cred.api_key)
-kc.set_access_token(keys_cred.access_token)
+apiKey = open("zerodha_api_key.txt",'r').read()
+accessToken = open("zerodha_access_token.txt",'r').read()
+kc = KiteConnect(api_key=apiKey)
+kc.set_access_token(accessToken)
 
 expiry = {
     "year": "23",
@@ -21,15 +20,15 @@ expiry = {
     #For monthly it will be year = "23", month = "SEP", day = ""
 }
 
-# expiry_bn = {
-#     "year": "23",
-#     "month": "N",
-#     "day": "01"
-#     #For monthly it will be year = "23", month = "SEP", day = ""
-# }
+expiry_bn = {
+    "year": "23",
+    "month": "N",
+    "day": "15"
+    #For monthly it will be year = "23", month = "SEP", day = ""
+}
 
 intExpiry=expiry["year"]+expiry["month"]+expiry["day"]
-# intExpiry_BN = expiry_bn["year"]+expiry_bn["month"]+expiry_bn["day"]
+intExpiry_BN = expiry_bn["year"]+expiry_bn["month"]+expiry_bn["day"]
 strikeList=[]
 instrumentList = []
 
@@ -69,12 +68,12 @@ instrumentList.append('NSE:NIFTY BANK')
 
 #Add CE
 for strike in strikeList:
-    # ltp_option = "NFO:BANKNIFTY" + str(intExpiry_BN)+str(strike)+"CE"
+    ltp_option = "NFO:BANKNIFTY" + str(intExpiry_BN)+str(strike)+"CE"
     instrumentList.append(ltp_option)
 
 #Add PE
 for strike in strikeList:
-    # ltp_option = "NFO:BANKNIFTY" + str(intExpiry_BN)+str(strike)+"PE"
+    ltp_option = "NFO:BANKNIFTY" + str(intExpiry_BN)+str(strike)+"PE"
     instrumentList.append(ltp_option)
 
 
@@ -156,7 +155,7 @@ def main():
     t1 = threading.Thread(target=startServer)
     t1.start()
     
-    kws = KiteTicker(keys_cred.api_key , keys_cred.access_token)
+    kws = KiteTicker(apiKey , accessToken)
     kws.on_ticks = on_ticks
     kws.on_connect = on_connect
     kws.on_close = on_close
